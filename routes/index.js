@@ -23,7 +23,7 @@ router.get('/products/:cat_id', product_controller.product_list);
 router.post('/products/create', product_controller.add_product);
 
 //update product
-router.post('/products/:p_id/update', product_controller.update_product )
+router.post('/products/:p_id/update', product_controller.update_product );
 
 
 module.exports = router;

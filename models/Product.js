@@ -10,7 +10,9 @@ const productSchema = new Schema({
     max: 255
   },
 
-  categories : [mongoose.Types.ObjectId]
+  categories : [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
+  price: Number,
+  description: String
 });
 
 module.exports = mongoose.model('Product', productSchema);

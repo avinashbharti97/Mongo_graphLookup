@@ -10,7 +10,11 @@ const categorySchema = new Schema({
     max: 255
   },
 
-  child_categories : [mongoose.Types.ObjectId]
+  parent_category :{
+    type:String,
+    required: false,
+    unique: false
+  }
 });
 
 module.exports = mongoose.model('Category', categorySchema);
