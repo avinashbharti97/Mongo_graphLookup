@@ -2,13 +2,21 @@ var Category = require('../models/Category.js');
 
 //display all categories
 exports.category_list = (req, res)=>{
-  Category.find({}, 'name parent_category' ).exec((err, cat_list)=>{
-    if(err){
-      res.status(500).send(err);
-    }
-    res.send(cat_list)
-    
-  })
+   Category.aggregate([
+     //{ $addFields: { "parent_category": "$_id".toString()}},
+    { $lookup: {
+      "from": "categories",
+      "localField": "parent_category",
+      "foreignField": "parent_category",
+      "as": "child_categories"
+    }}
+  ]).then(categories => {
+      res.send(categories);
+  }).catch(err => {
+      res.status(500).send({
+          message: err.message || "Some error occurred while retrieving categories."
+      });
+  });
 };
 
 //add a category
