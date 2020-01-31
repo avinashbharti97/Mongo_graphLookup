@@ -2,14 +2,17 @@ var Category = require('../models/Category.js');
 
 //display all categories
 exports.category_list = (req, res)=>{
-   Category.aggregate([
-     //{ $addFields: { "parent_category": "$_id".toString()}},
-    { $lookup: {
-      "from": "categories",
-      "localField": "parent_category",
-      "foreignField": "parent_category",
-      "as": "child_categories"
-    }}
+  Category.aggregate([
+     {
+   $graphLookup: {
+     from: "categories",
+      startWith:"$name",
+      connectFromField: "name",
+       connectToField: "parent_category",
+     //depthField: "depth",
+      as: "child_category"
+   }
+     }
   ]).then(categories => {
       res.send(categories);
   }).catch(err => {
